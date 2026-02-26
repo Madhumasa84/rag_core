@@ -30,17 +30,17 @@ This demonstrates the core retrieval mechanism used in **Retrieval-Augmented Gen
 ### 🔁 Flow Diagram
 
 PDF
-  ↓
+↓
 Chunking
-  ↓
+↓
 Embedding (MiniLM)
-  ↓
+↓
 Chroma Vector DB
-  ↓
+↓
 Query Embedding
-  ↓
+↓
 Cosine Similarity Search
-  ↓
+↓
 Top-K Results
 
 
