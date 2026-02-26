@@ -1,28 +1,34 @@
-PDF Semantic Search (Minimal RAG Core)
-Overview
+# 📄 PDF Semantic Search (Minimal RAG Core)
 
-This project implements a minimal semantic search pipeline over a PDF document.
+## 🔎 Overview
 
-Instead of performing keyword-based search, the system converts text into dense vector representations (embeddings) using a pre-trained Sentence Transformer model. These vectors are stored in a Chroma vector database, enabling similarity-based retrieval using cosine similarity.
+This project implements a **minimal semantic search pipeline** over a PDF document.
 
-This demonstrates the core retrieval component used in Retrieval-Augmented Generation (RAG) systems.
+Instead of performing keyword-based search, the system:
 
-Architecture
-Pipeline Steps
+- Converts text into dense vector representations (embeddings)
+- Stores them in a vector database (ChromaDB)
+- Retrieves relevant chunks using cosine similarity
 
-Extract raw text from PDF
+This demonstrates the core retrieval mechanism used in **Retrieval-Augmented Generation (RAG)** systems.
 
-Split text into overlapping chunks
+---
 
-Convert each chunk into a 384-dimensional embedding using all-MiniLM-L6-v2
+## 🏗 Architecture
 
-Store embeddings in ChromaDB (persistent storage)
+### Pipeline Steps
 
-Embed the user query using the same model
+1. Extract raw text from PDF  
+2. Split text into overlapping chunks  
+3. Convert each chunk into a 384-dimensional embedding (`all-MiniLM-L6-v2`)  
+4. Store embeddings in ChromaDB (persistent storage)  
+5. Embed the user query using the same model  
+6. Perform cosine similarity search to retrieve Top-K relevant chunks  
 
-Perform cosine similarity search to retrieve Top-K relevant chunks
+---
 
-Flow Diagram
+### 🔁 Flow Diagram
+
 PDF
   ↓
 Chunking
@@ -36,42 +42,49 @@ Query Embedding
 Cosine Similarity Search
   ↓
 Top-K Results
-How It Works Internally
 
-Each text chunk is converted into a fixed-size vector (384 dimensions).
 
-Semantically similar chunks produce vectors that point in similar directions in high-dimensional space.
+---
 
-Cosine similarity measures the angle between vectors to determine semantic closeness.
+## ⚙️ How It Works Internally
 
-The query is embedded into the same vector space and compared against stored vectors.
+- Each text chunk is converted into a fixed-size vector (384 dimensions).
+- Semantically similar chunks produce vectors that point in similar directions.
+- Cosine similarity measures the angle between vectors.
+- The query is embedded into the same vector space.
+- The closest vectors (Top-K) are returned as results.
 
-The most similar vectors (Top-K) are returned as relevant results.
+> Note: No training occurs during this process. The embedding model is pre-trained and used only for inference.
 
-Note: No training occurs during this process. The embedding model is pre-trained and used only for inference.
+---
 
-Tech Stack
+## 🛠 Tech Stack
 
-Python
+- Python  
+- sentence-transformers (`all-MiniLM-L6-v2`)  
+- ChromaDB  
+- PyPDF  
 
-sentence-transformers (all-MiniLM-L6-v2)
+---
 
-ChromaDB
+## 🚀 Installation
 
-PyPDF
-
-Installation
+```bash
 git clone <repo_url>
 cd rag_ini
 python -m venv venv
 venv\Scripts\activate
 pip install -r requirements.txt
+
 Usage
+
 Step 1: Store Embeddings
 python src/store.py
 Step 2: Query the System
 python src/query.py
-Key Learnings
+
+
+📚Key Learnings
 
 Importance of chunk size and overlap in preserving semantic context
 
@@ -81,7 +94,8 @@ Difference between in-memory and persistent vector databases
 
 Cosine similarity measures vector direction rather than magnitude
 
-Future Improvements
+
+🔮Future Improvements
 
 Add LLM to generate answers from retrieved chunks (Full RAG system)
 
@@ -91,7 +105,7 @@ Add metadata filtering
 
 Build CLI interface for dynamic querying
 
-Repository Structure
+📂Repository Structure
 rag_ini/
 │
 ├── data/
