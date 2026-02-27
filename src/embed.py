@@ -3,6 +3,16 @@ from load_pdf import load_pdf
 from chunk import chunk_text
 
 def generate_embeddings(chunks):
+    """
+    Converts text chunks into dense vector embeddings
+    using a pre-trained Sentence Transformer model.
+
+    Args:
+        chunks (list[str]): List of text chunks.
+
+    Returns:
+        list[list[float]]: List of embedding vectors.
+    """
     model = SentenceTransformer("all-MiniLM-L6-v2")
     embeddings = model.encode(chunks)
     return embeddings

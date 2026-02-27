@@ -3,6 +3,17 @@ from sentence_transformers import SentenceTransformer
 
 
 def query_collection(query_text):
+    """
+    Embeds the input query and retrieves the most
+    semantically similar text chunks from Chroma.
+
+    Args:
+        query_text (str): User query string.
+        n_results (int): Number of top results to retrieve.
+
+    Returns:
+        dict: Query results including documents and similarity scores.
+    """
     model = SentenceTransformer("all-MiniLM-L6-v2")
 
     from chromadb.config import Settings
@@ -29,4 +40,3 @@ if __name__ == "__main__":
     print("Top Results:\n")
     for doc in results["documents"][0]:
         print(doc)
-        print("-" * 50)
