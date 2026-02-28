@@ -18,7 +18,7 @@ This demonstrates the core retrieval mechanism used in **Retrieval-Augmented Gen
 
 ### Pipeline Steps
 
-1. Extract raw text from PDF  
+1. Extract raw text from PDF(cleaning is also done)  
 2. Split text into overlapping chunks  
 3. Convert each chunk into a 384-dimensional embedding (`all-MiniLM-L6-v2`)  
 4. Store embeddings in ChromaDB (persistent storage)  
@@ -29,7 +29,7 @@ This demonstrates the core retrieval mechanism used in **Retrieval-Augmented Gen
 
 ### 🔁 Flow Diagram
 
-PDF
+PDF(Loading and cleaning)
 ↓
 Chunking
 ↓
@@ -57,6 +57,24 @@ Top-K Results
 > Note: No training occurs during this process. The embedding model is pre-trained and used only for inference.
 
 ---
+
+## 🧹 PDF Cleaning Enhancements
+
+To handle unstructured PDFs (with repeated headers, footers, page numbers, and watermarks), a preprocessing step was added before embedding generation.
+
+Cleaning includes:
+
+Frequency-based header detection
+
+Frequency-based footer detection
+
+Regex-based watermark removal
+
+Page number removal
+
+Whitespace normalization
+
+This improves embedding quality by reducing noise in vector representations.
 
 ## 🛠 Tech Stack
 
