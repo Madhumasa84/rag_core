@@ -76,6 +76,21 @@ Whitespace normalization
 
 This improves embedding quality by reducing noise in vector representations.
 
+
+## Decoder-based QA Extension
+
+The system was extended with a lightweight decoder model to generate answers grounded in the retrieved document context.
+
+Pipeline:
+
+User Query → Vector Retrieval → Context Construction → Decoder Model → Generated Answer
+
+Tested lightweight models:
+- Microsoft Phi-3 Mini
+- TinyLlama (exploratory)
+
+The decoder generates responses strictly using retrieved document content.
+
 ## 🛠 Tech Stack
 
 - Python  
