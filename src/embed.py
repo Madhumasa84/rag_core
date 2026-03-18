@@ -1,6 +1,6 @@
 from sentence_transformers import SentenceTransformer
-from load_pdf import load_pdf
-from chunk import chunk_text
+from .load_pdf import load_pdf
+from .chunk import chunk_text
 
 def generate_embeddings(chunks):
     """

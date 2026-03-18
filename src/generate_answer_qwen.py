@@ -2,7 +2,7 @@
 
 from transformers import AutoModelForCausalLM, AutoTokenizer
 import torch
-from query import query_collection
+from .query import query_collection
 import time
 
 # Model ID from your research

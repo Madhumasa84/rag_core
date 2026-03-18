@@ -1,8 +1,8 @@
 import chromadb
 from chromadb.config import Settings
-from load_pdf import load_pdf
-from chunk import chunk_text
-from embed import generate_embeddings
+from .load_pdf import load_pdf
+from .chunk import chunk_text
+from .embed import generate_embeddings
 
 
 def store_embeddings(chunks, embeddings):

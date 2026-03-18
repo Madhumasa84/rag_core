@@ -1,6 +1,6 @@
 import chromadb
 from sentence_transformers import SentenceTransformer
-
+from chromadb.config import Settings
 
 def query_collection(query_text):
     """
