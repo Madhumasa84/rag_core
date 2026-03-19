@@ -1,5 +1,3 @@
-# api.py
-
 from fastapi import FastAPI, UploadFile, File, HTTPException
 from fastapi.responses import JSONResponse
 import shutil
@@ -8,7 +6,7 @@ from pathlib import Path
 from fastapi import Form
 from src.processors import process_and_store
 import uuid
-
+from src.generate_answer_qwen import generate_answer
 app = FastAPI(title="Document QA API", version="1.0")
 file_registry = {}
 # Creating upload directory if it doesn't exist
@@ -60,12 +58,15 @@ async def upload_file(file: UploadFile = File(...)):
             "collection": collection_name
         }
         
+
         return {
-            "file_id": file_id,
-            "filename": file.filename,
-            "size": file_size,
-            "message": "File uploaded and processed successfully"
-        }
+           "file_id": file_id,
+           "filename": file.filename,
+           "file_type": file_ext,
+           "size": file_path.stat().st_size,
+           "chunks_stored": "Check console for count",
+           "message": f"File uploaded and processed successfully. Format: {file_ext}"
+       }
     
     except Exception as e:
         print(f"ERROR: {str(e)}")  # This will show in console
