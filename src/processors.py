@@ -1,12 +1,12 @@
 # src/processors.py
 
+import uuid
+import chromadb
+from chromadb.config import Settings
 from .extractors import extract_text
 from .chunk import chunk_text
 from .embed import generate_embeddings
 from .load_pdf import clean_text
-import chromadb
-from chromadb.config import Settings
-import os
 
 def process_and_store(file_path: str, collection_name: str = "default"):
     """
@@ -17,7 +17,7 @@ def process_and_store(file_path: str, collection_name: str = "default"):
     2. Clean the extracted text
     3. Split into chunks
     4. Generate embeddings
-    5. Store in ChromaDB
+    5. Store in ChromaDB using PersistentClient and UUIDs
     """
     print(f"Processing: {file_path}")
     
@@ -39,29 +39,32 @@ def process_and_store(file_path: str, collection_name: str = "default"):
     embeddings = generate_embeddings(chunks)
     print(f"  → Embedding dimension: {len(embeddings[0])}")
     
-    # Step 5: Store in Chroma
+    # Step 5: Store in Chroma using updated API
     print("  Storing in vector database...")
-    client = chromadb.Client(
-        Settings(
-            persist_directory="./chroma_db",
-            is_persistent=True
-        )
-    )
+    
+    # Use PersistentClient (new API - not deprecated)
+    client = chromadb.PersistentClient(path="./chroma_db")
     
     # Delete existing collection if it exists (for fresh upload)
     try:
         client.delete_collection(collection_name)
+        print(f"  Removed existing collection: {collection_name}")
     except:
         pass  # Collection doesn't exist, that's fine
     
+    # Create new collection
     collection = client.create_collection(name=collection_name)
     
+    # Use UUID for unique IDs to avoid collisions
+    chunk_ids = []
     for i, chunk in enumerate(chunks):
+        chunk_id = str(uuid.uuid4())  # Unique ID per chunk
+        chunk_ids.append(chunk_id)
         collection.add(
             documents=[chunk],
             embeddings=[embeddings[i]],
-            ids=[f"{collection_name}_{i}"]
+            ids=[chunk_id]
         )
     
-    print(f"Successfully stored {len(chunks)} chunks")
+    print(f"Successfully stored {len(chunks)} chunks with UUID IDs")
     return collection
