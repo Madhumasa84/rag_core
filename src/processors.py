@@ -56,14 +56,12 @@ def process_and_store(file_path: str, collection_name: str = "default"):
     collection = client.create_collection(name=collection_name)
     
     # Use UUID for unique IDs to avoid collisions
-    chunk_ids = []
-    for i, chunk in enumerate(chunks):
-        chunk_id = str(uuid.uuid4())  # Unique ID per chunk
-        chunk_ids.append(chunk_id)
+    if chunks:
+        chunk_ids = [str(uuid.uuid4()) for _ in range(len(chunks))]
         collection.add(
-            documents=[chunk],
-            embeddings=[embeddings[i]],
-            ids=[chunk_id]
+            documents=chunks,
+            embeddings=embeddings,
+            ids=chunk_ids
         )
     
     print(f"Successfully stored {len(chunks)} chunks with UUID IDs")
