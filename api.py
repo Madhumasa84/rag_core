@@ -29,7 +29,8 @@ async def upload_file(file: UploadFile = File(...)):
     try:
         # Generate unique ID
         file_id = str(uuid.uuid4())
-        file_ext = os.path.splitext(file.filename)[1].lower()
+        safe_filename = os.path.basename(file.filename.replace("\\", "/"))
+        file_ext = os.path.splitext(safe_filename)[1].lower()
         
         # Check if supported
         supported = ['.pdf', '.pptx', '.ppt', '.html', '.htm', '.txt']
@@ -53,7 +54,7 @@ async def upload_file(file: UploadFile = File(...)):
         
         # Register
         file_registry[file_id] = {
-            "filename": file.filename,
+            "filename": safe_filename,
             "path": str(file_path),
             "collection": collection_name
         }
@@ -61,7 +62,7 @@ async def upload_file(file: UploadFile = File(...)):
 
         return {
            "file_id": file_id,
-           "filename": file.filename,
+           "filename": safe_filename,
            "file_type": file_ext,
            "size": file_path.stat().st_size,
            "chunks_stored": "Check console for count",
